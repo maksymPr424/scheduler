@@ -1,0 +1,396 @@
+[
+  {
+    "day": "Monday",
+    "lessons": [
+      {
+        "time_start": "8:00",
+        "time_end": "9:30",
+        "subject": "Metody ilościowe w ekonomii i finansach",
+        "lessonType": "Wyklad",
+        "teacher": "dr Beata Kloskowska",
+        "auditory": "s.105, Arciszewskiego 22b",
+        "groups": "all"
+      },
+      {
+        "time_start": "11:00",
+        "time_end": "12:30",
+        "subject": "Materiałoznawstwo",
+        "lessonType": "CL",
+        "teacher": "dr A. Kamińska",
+        "auditory": "s.1, Arciszewskiego 22b",
+        "groups": "mater"
+      },
+      {
+        "time_start": "12:45",
+        "time_end": "14:15",
+        "subject": "Materiałoznawstwo",
+        "lessonType": "CL",
+        "teacher": "dr A. Kamińska",
+        "auditory": "s.1, Arciszewskiego 22b",
+        "groups": "mater"
+      },
+      {
+        "time_start": "14:30",
+        "time_end": "16:15",
+        "subject": "Programowanie PHP-projekt",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.8",
+        "groups": "web1"
+      },
+      {
+        "time_start": "16:30",
+        "time_end": "18:00",
+        "subject": "Metody ilościowe w ekonomii i finansach",
+        "lessonType": "CL",
+        "teacher": "dr B. Kloskowska",
+        "auditory": "s.5",
+        "groups": "web1"
+      },
+      {
+        "time_start": "18:15",
+        "time_end": "19:45",
+        "subject": "Metody ilościowe w ekonomii i finansach",
+        "lessonType": "CL",
+        "teacher": "dr B. Kloskowska",
+        "auditory": "s.5",
+        "groups": "web1"
+      },
+      {
+        "time_start": "16:30",
+        "time_end": "18:15",
+        "subject": "Programowanie PHP-projekt",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.8",
+        "groups": "web2"
+      },
+      {
+        "time_start": "18:30",
+        "time_end": "19:45",
+        "subject": "Programowanie PHP-projekt",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.8",
+        "groups": "web2"
+      },
+      {
+        "time_start": "11:00",
+        "time_end": "12:30",
+        "subject": "Wstęp do nauk tech",
+        "lessonType": "Konwersatorium",
+        "teacher": "prof. V. Tomin",
+        "auditory": "s.102, Arciszewskiego 22b",
+        "groups": "tech1, tech2"
+      },
+      {
+        "time_start": "12:45",
+        "time_end": "13:45",
+        "subject": "Wstęp do nauk tech",
+        "lessonType": "Konwersatorium",
+        "teacher": "prof. V. Tomin",
+        "auditory": "s.102, Arciszewskiego 22b",
+        "groups": "tech1, tech2"
+      }
+    ]
+  },
+  {
+    "day": "Tuesday",
+    "lessons": [
+      {
+        "time_start": "8:00",
+        "time_end": "9:30",
+        "subject": "Inżynieria oprogramowania I",
+        "lessonType": "Wyklad",
+        "teacher": "dr Ryszard Motyka",
+        "auditory": "s.102, Arciszewskiego 22b",
+        "groups": "all"
+      },
+      {
+        "time_start": "10:00",
+        "time_end": "11:30",
+        "subject": "Komunikacja w zespole - warsztaty",
+        "lessonType": "AU",
+        "teacher": "mgr inż. A. Śmigielski",
+        "auditory": "s.10",
+        "groups": "komnk1"
+      },
+      {
+        "time_start": "11:45",
+        "time_end": "13:15",
+        "subject": "Komunikacja w zespole - warsztaty",
+        "lessonType": "AU",
+        "teacher": "mgr inż. A. Śmigielski",
+        "auditory": "s.10",
+        "groups": "komnk2"
+      },
+      {
+        "time_start": "13:45",
+        "time_end": "15:15",
+        "subject": "Materiałoznawstwo",
+        "lessonType": "Konwersatorium",
+        "teacher": "V. Tomin",
+        "auditory": "s.103, Arciszewskiego 22b",
+        "groups": "mater"
+      },
+      {
+        "time_start": "15:30",
+        "time_end": "16:30",
+        "subject": "Materiałoznawstwo",
+        "lessonType": "Konwersatorium",
+        "teacher": "V. Tomin",
+        "auditory": "s.103, Arciszewskiego 22b",
+        "groups": "mater"
+      },
+      {
+        "time_start": "17:00",
+        "time_end": "18:30",
+        "subject": "Programowanie PHP-projekt",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.8",
+        "groups": "web1"
+      },
+      {
+        "time_start": "18:45",
+        "time_end": "20:00",
+        "subject": "Programowanie PHP-projekt",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.8",
+        "groups": "web2"
+      },
+      {
+        "time_start": "15:30",
+        "time_end": "17:00",
+        "subject": "Wstęp do nauk tech",
+        "lessonType": "CL",
+        "teacher": "A. Kamińska",
+        "auditory": "s.1, Arciszewskiego 22b",
+        "groups": "tech2"
+      },
+      {
+        "time_start": "13:45",
+        "time_end": "15:15",
+        "subject": "Wstęp do nauk tech",
+        "lessonType": "CL",
+        "teacher": "A. Kamińska",
+        "auditory": "s.1, Arciszewskiego 22b",
+        "groups": "tech2"
+      }
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "lessons": [
+      {
+        "time_start": "9:30",
+        "time_end": "10:45",
+        "subject": "Grafika inż. I",
+        "lessonType": "CL",
+        "teacher": "A. Włodarkiewicz",
+        "auditory": "s.128A",
+        "groups": "web2"
+      },
+      {
+        "time_start": "11:00",
+        "time_end": "12:15",
+        "subject": "Grafika inż. I",
+        "lessonType": "CL",
+        "teacher": "A. Włodarkiewicz",
+        "auditory": "s.128A",
+        "groups": "inz"
+      },
+      {
+        "time_start": "12:30",
+        "time_end": "13:45",
+        "subject": "Statystyka",
+        "lessonType": "Wyklad",
+        "teacher": "dr M. Turowska",
+        "auditory": "s.105, Arciszewskiego 22b",
+        "groups": "all"
+      },
+      {
+        "time_start": "8:00",
+        "time_end": "9:15",
+        "subject": "Grafika inż. I",
+        "lessonType": "CL",
+        "teacher": "A. Włodarkiewicz",
+        "auditory": "s.128A",
+        "groups": "web1"
+      },
+      {
+        "time_start": "14:15",
+        "time_end": "16:30",
+        "subject": "Wprowadzenie do programowania aplikacji mobilnych",
+        "lessonType": "CL",
+        "teacher": "mgr inż. Jakub Bilski",
+        "auditory": "s.8",
+        "groups": "web1"
+      },
+      {
+        "time_start": "14:15",
+        "time_end": "16:30",
+        "subject": "Wprowadzenie do programowania aplikacji mobilnych",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.9",
+        "groups": "web2"
+      },
+      {
+        "time_start": "16:45",
+        "time_end": "19:00",
+        "subject": "Administracja i zarządzanie serwerami",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.9",
+        "groups": "web1"
+      },
+      {
+        "time_start": "17:15",
+        "time_end": "19:30",
+        "subject": "Metody ilościowe w ekonomii i finansach",
+        "lessonType": "CL",
+        "teacher": "dr B. Kloskowska",
+        "auditory": "s.4",
+        "groups": "web2"
+      },
+      {
+        "time_start": "19:15",
+        "time_end": "20:00",
+        "subject": "Programowanie PHP-projekt",
+        "lessonType": "CL",
+        "teacher": "mgr inż. M. Koplin",
+        "auditory": "s.9",
+        "groups": "web1"
+      },
+      {
+        "time_start": "8:00",
+        "time_end": "10:15",
+        "subject": "Metody rozpoznawania obrazów",
+        "lessonType": "CL",
+        "teacher": "inż. Robert Bukowski",
+        "auditory": "s.14",
+        "groups": "inz"
+      }
+    ]
+  },
+  {
+    "day": "Thursday",
+    "lessons": [
+      {
+        "time_start": "8:00",
+        "time_end": "9:30",
+        "subject": "Inżynieria oprogramowania I",
+        "lessonType": "CL",
+        "teacher": "dr R.Motyka",
+        "auditory": "s.14",
+        "groups": "web1"
+      },
+      {
+        "time_start": "9:45",
+        "time_end": "11:15",
+        "subject": "Inżynieria oprogramowania I",
+        "lessonType": "CL",
+        "teacher": "dr R.Motyka",
+        "auditory": "s.14",
+        "groups": "web2"
+      },
+      {
+        "time_start": "11:30",
+        "time_end": "13:00",
+        "subject": "Inżynieria oprogramowania I",
+        "lessonType": "CL",
+        "teacher": "dr R.Motyka",
+        "auditory": "s.14",
+        "groups": "inz"
+      },
+      {
+        "time_start": "15:30",
+        "time_end": "17:45",
+        "subject": "Metody ilościowe w ekonomii i finansach",
+        "lessonType": "CL",
+        "teacher": "dr B. Kloskowska",
+        "auditory": "s.5",
+        "groups": "inz"
+      },
+      {
+        "time_start": "9:15",
+        "time_end": "11:00",
+        "subject": "Programowanie w Phytonie",
+        "lessonType": "CL",
+        "teacher": "mgr inż. K.Suchojad",
+        "auditory": "s.128A",
+        "groups": "inz"
+      }
+    ]
+  },
+  {
+    "day": "Friday",
+    "lessons": [
+      {
+        "time_start": "9:30",
+        "time_end": "10:45",
+        "subject": "Statystyka",
+        "lessonType": "CL",
+        "teacher": "mgr Emilia Przemska",
+        "auditory": "s.4",
+        "groups": "web1"
+      },
+      {
+        "time_start": "9:00",
+        "time_end": "10:45",
+        "subject": "Programowanie w Phytonie",
+        "lessonType": "CL",
+        "teacher": "mgr inż. K.Suchojad",
+        "auditory": "s.5",
+        "groups": "inz"
+      },
+      {
+        "time_start": "10:00",
+        "time_end": "12:15",
+        "subject": "Wprowadzenie do programowania aplikacji mobilnych",
+        "lessonType": "CL",
+        "teacher": "mgr D. Stoltmann",
+        "auditory": "s.14",
+        "groups": "web2"
+      },
+      {
+        "time_start": "12:30",
+        "time_end": "14:45",
+        "subject": "Wprowadzenie do programowania aplikacji mobilnych",
+        "lessonType": "CL",
+        "teacher": "mgr D. Stoltmann",
+        "auditory": "s.14",
+        "groups": "inz"
+      },
+      {
+        "time_start": "12:30",
+        "time_end": "13:45",
+        "subject": "Statystyka",
+        "lessonType": "CL",
+        "teacher": "mgr Emilia Przemska",
+        "auditory": "s.4",
+        "groups": "web2"
+      },
+      {
+        "time_start": "11:00",
+        "time_end": "12:15",
+        "subject": "Statystyka",
+        "lessonType": "CL",
+        "teacher": "mgr Emilia Przemska",
+        "auditory": "s.4",
+        "groups": "inz"
+      },
+      {
+        "time_start": "15:30",
+        "time_end": "17:45",
+        "subject": "Wstęp do nauk tech",
+        "lessonType": "CL",
+        "teacher": "M.Brozis",
+        "auditory": "s.1, Arciszewskiego",
+        "groups": "tech2"
+      }
+    ]
+  }
+]

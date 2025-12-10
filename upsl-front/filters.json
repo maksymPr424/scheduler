@@ -1,0 +1,75 @@
+[
+  {
+    "name": "Spec. Kurs 1",
+    "id": 1,
+    "options": [
+      {
+        "name": "Nie wybrarano",
+        "id": 9,
+        "json_groups_to_include": ["tech1", "tech2", "mater"]
+      },
+      {
+        "name": "Wstęp do nauk tech (Grup 1)",
+        "id": 1,
+        "json_groups_to_include": ["tech1"]
+      },
+      {
+        "name": "Wstęp do nauk tech (Grup 2)",
+        "id": 2,
+        "json_groups_to_include": ["tech2"]
+      },
+      {
+        "name": "Materiałoznawstwo",
+        "id": 3,
+        "json_groups_to_include": ["mater"]
+      }
+    ]
+  },
+  {
+    "name": "Spec. Kurs 2",
+    "id": 2,
+    "options": [
+      {
+        "name": "Nie wybrarano",
+        "id": 10,
+        "json_groups_to_include": ["web1", "web2", "inz"]
+      },
+      {
+        "name": "Web 1",
+        "id": 4,
+        "json_groups_to_include": ["web1"]
+      },
+      {
+        "name": "Web 2",
+        "id": 5,
+        "json_groups_to_include": ["web2"]
+      },
+      {
+        "name": "Inżynieria",
+        "id": 6,
+        "json_groups_to_include": ["inz"]
+      }
+    ]
+  },
+  {
+    "name": "Warsztaty",
+    "id": 3,
+    "options": [
+      {
+        "name": "Nie wybrarano",
+        "id": 11,
+        "json_groups_to_include": ["komnk1", "komnk2"]
+      },
+      {
+        "name": "Komunikacja (Grup 1)",
+        "id": 7,
+        "json_groups_to_include": ["komnk1"]
+      },
+      {
+        "name": "Komunikacja (Grup 2)",
+        "id": 8,
+        "json_groups_to_include": ["komnk2"]
+      }
+    ]
+  }
+]
