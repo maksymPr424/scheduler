@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date, Time, ForeignKey
-from db.base import Base
+from app.db.base import Base
 
 class Override(Base):
     __tablename__ = "overrides"

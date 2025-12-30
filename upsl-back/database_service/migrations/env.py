@@ -40,6 +40,11 @@ from app.db.models.override import Override
 from app.db.models.calendar_block import CalendarBlock
 from app.db.models.section import Section
 
+from app.db.models.group import Group
+from app.db.models.group_filter import GroupFilter
+from app.db.models.filter_options import FilterOption
+from app.db.models.filter_options_group import filter_option_groups
+
 target_metadata = Base.metadata
 
 
