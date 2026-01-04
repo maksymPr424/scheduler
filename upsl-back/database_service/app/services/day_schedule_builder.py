@@ -6,16 +6,16 @@ from app.domain.enums import DayOfWeek, OverrideAction
 from app.domain.exceptions.schedule import LessonsNotFound
 
 def build_schedule_day(day: DayOfWeek, date: date, section_id: int, db):    
-
     lessons = db.query(Lesson).filter(
         Lesson.day_of_week == int(day),
         Lesson.section_id == section_id
     ).all()
-    
+
     lessons_by_id = {lesson.id: lesson for lesson in lessons}
 
     if not lessons:
         raise LessonsNotFound()
+
     
     calendar_blocks = (db.query(CalendarBlock).filter(
         CalendarBlock.section_id == section_id,
@@ -68,9 +68,10 @@ def build_schedule_day(day: DayOfWeek, date: date, section_id: int, db):
             "subject": l.subject,
             "start": l.time_start.strftime("%H:%M"),
             "end": l.time_end.strftime("%H:%M"),
+            "lesson_type": l.lesson_type,
             "teacher": l.teacher,
             "auditory": l.auditory,
-            "groups": l.groups,
+            "groups": [l.groups],
         }
         for l in result
     ]

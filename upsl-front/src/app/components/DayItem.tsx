@@ -20,16 +20,16 @@ export default function DayItem({ lesson }: IDayItem) {
         variant="outline"
         asChild
         role="listitem"
-        className={`${colorSet[lesson.lessonType]} rounded-2xl set-lesson-bg`}
+        className={`${colorSet[lesson.lesson_type]} rounded-2xl set-lesson-bg`}
       >
         <a href="#">
           <ItemDescription className="flex flex-col gap-1 items-start max-w-17 wrap-anywhere">
             <span
               className={` ${
-                backSet[lesson.lessonType]
+                backSet[lesson.lesson_type]
               } set-unprimary-color text-center w-7 h-5 rounded-sm font-semibold text-sm`}
             >
-              {shortSet[lesson.lessonType]}
+              {shortSet[lesson.lesson_type]}
             </span>
 
             <span className="flex flex-col gap-1">
@@ -37,13 +37,13 @@ export default function DayItem({ lesson }: IDayItem) {
                 // className={`${colSet[lesson.lessonType]} font-bold text-xl`}
                 className="set-primary-color font-semibold text-2xl"
               >
-                {lesson.time_start}
+                {lesson.start}
               </span>
               <span
-                className={`${colSet[lesson.lessonType]} font-bold text-xl`}
-                // className={`${colSet[lesson.lessonType]} font-bold text-xl`}
+                className={`${colSet[lesson.lesson_type]} font-bold text-xl`}
+                // className={`${colSet[lesson.lesson_type]} font-bold text-xl`}
               >
-                {lesson.time_end}
+                {lesson.end}
               </span>
             </span>
 

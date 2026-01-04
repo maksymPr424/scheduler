@@ -1,46 +1,36 @@
 type LessonType = "Wyklad" | "CL" | "Konwersatorium" | "AU";
 
 export interface ILesson {
-  time_start: string;
-  time_end: string;
   subject: string;
-  lessonType: LessonType;
+  start: string;
+  end: string;
+  lesson_type: LessonType;
   teacher: string;
   auditory: string;
   groups: string;
-  trackNumber: number;
 }
 
 export interface IDay {
   day: string;
+  date: string;
   lessons: ILesson[];
-}
-
-export interface IPlan {
-  schedules: IDay[];
-  id: string;
 }
 
 export interface IPlanState {
   plans: IDay[] | [];
-  id: string | null;
   loading: boolean;
   error: string | null;
 }
 
 export interface IPayloadPlan {
-  payload: IPlan;
+  payload: IDay[];
 }
 
 export type MajorType = "" | "Informatyka";
 
-export type YearType = "" | "I" | "II" | "III" |  "IV";
+export type YearType = "" | "I" | "II" | "III" | "IV";
 
 export interface IMajorState {
   major: MajorType;
   year: YearType;
-}
-
-export interface IPlanById extends IPlan {
-  metaData: IMajorState;
 }

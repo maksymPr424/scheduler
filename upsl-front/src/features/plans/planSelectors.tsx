@@ -17,13 +17,14 @@ export const selectFilteredPlans = createSelector(
     return plans
       .map((day: IDay) => {
         const filteredLessons = day.lessons
-          .filter((lesson: ILesson) => {
-            if (lesson.groups == "all" || activeFilters.includes(lesson.groups))
-              return true;
-          })
+          .filter(
+            (lesson) =>
+              lesson.groups.includes("all") ||
+              lesson.groups.some((group) => activeFilters.includes(group))
+          )
           .sort((a, b) => {
-            const [ha, ma] = a.time_start.split(":").map(Number);
-            const [hb, mb] = b.time_start.split(":").map(Number);
+            const [ha, ma] = a.start.split(":").map(Number);
+            const [hb, mb] = b.start.split(":").map(Number);
 
             return ha * 60 + ma - (hb * 60 + mb);
           });

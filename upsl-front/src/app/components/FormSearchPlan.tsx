@@ -1,11 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../lib/hooks";
-import { fetchPlans } from "../../features/plans/planThunks";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+
+import { useAppDispatch } from "../../lib/hooks";
 import { schema, Ischema } from "../validations/searchPlanValidation";
+
+import { fetchPlans } from "../../features/plans/planThunks";
+import { fetchDirections } from "@/features/directions/directionsThunks";
+
+import {
+  selectActiveDirection,
+  selectDirections,
+  selectYears,
+} from "@/features/directions/directionsSelectors";
+
+import { setActiveDirection } from "@/features/directions/directionsSlice";
+
 import {
   Select,
   SelectContent,
@@ -14,142 +28,285 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { IPayloadPlan } from "@/interfaces/planInterfaces";
-import { setMajorData } from "@/features/major/majorSlice";
-import { useSelector } from "react-redux";
-import { selectMajor, selectYear } from "@/features/major/majorSelectors";
+import Link from "next/link";
 
-const years = [3];
-const majors = ["Informatyka"];
+// ---- helpers ----
+function normalizeValue(v: unknown): string {
+  return String(v ?? "")
+    .trim()
+    .toLowerCase();
+}
+
+function toLabel(v: string): string {
+  const s = String(v ?? "").trim();
+  if (!s) return "";
+  // "computer_science" -> "Computer science", "spec kurs 1" -> "Spec kurs 1"
+  const cleaned = s.replace(/[_-]+/g, " ");
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
 
 export default function FormSearchPlan() {
   const dispatch = useAppDispatch();
-  const { plans, loading, error } = useAppSelector((state) => state.plans);
   const router = useRouter();
-  const major = useSelector(selectMajor);
-  const year = useSelector(selectYear);
 
+  // --- hydration gate (avoid SSR mismatch) ---
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  // --- redux ---
+  const rawDirections = useSelector(selectDirections); // might contain mixed-case
+  const rawYears = useSelector(selectYears); // number[]
+  const active = useSelector(selectActiveDirection); // {direction, year} | null
+
+  // Fetch directions once after mount
+  useEffect(() => {
+    if (mounted) dispatch(fetchDirections());
+  }, [dispatch, mounted]);
+
+  // Normalize directions to lowercase values, keep labels capitalized
+  const directions = useMemo(() => {
+    // Map to unique lowercase values, filter out empty
+    const vals = rawDirections
+      .map((d) => normalizeValue(d))
+      .filter((d) => d.length > 0);
+
+    return Array.from(new Set(vals));
+  }, [rawDirections]);
+
+  const years = useMemo(() => {
+    // keep only valid numbers
+    return (rawYears ?? []).filter(
+      (y) => typeof y === "number" && Number.isFinite(y)
+    );
+  }, [rawYears]);
+
+  // Normalize active values (so form value ALWAYS matches SelectItem values)
+  const activeDirection = useMemo(
+    () => normalizeValue(active?.direction),
+    [active]
+  );
+  const activeYearStr = useMemo(
+    () => (active?.year != null ? String(active.year) : ""),
+    [active]
+  );
+
+  const isReady = mounted && directions.length > 0 && years.length > 0;
+
+  // Pick safe defaults that EXIST in options (critical for shadcn Select)
+  const safeDirection = useMemo(() => {
+    if (activeDirection && directions.includes(activeDirection))
+      return activeDirection;
+    return directions[0];
+  }, [activeDirection, directions]);
+
+  const safeYear = useMemo(() => {
+    const yearsStr = years.map(String);
+    if (activeYearStr && yearsStr.includes(activeYearStr)) return activeYearStr;
+    return String(years[0]);
+  }, [activeYearStr, years]);
+
+  // --- form ---
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<Ischema>({
     resolver: yupResolver(schema),
+    mode: "onChange",
     defaultValues: {
-      year: year,
-      major: major,
+      direction: safeDirection as any, // stored as lowercase string
+      year: safeYear as any, // stored as string
     },
   });
 
+  // Reset once when options become ready (avoid overwriting user's later input)
+  const initialized = useRef(false);
+  useEffect(() => {
+    if (!isReady) return;
+    if (initialized.current) return;
+    initialized.current = true;
+
+    reset({
+      direction: safeDirection as any,
+      year: safeYear as any,
+    });
+  }, [isReady, reset, safeDirection, safeYear]);
+
+  // Sync form → redux (optional but you asked active stores current selection)
+  const watchedDirection = useWatch({ control, name: "direction" });
   const watchedYear = useWatch({ control, name: "year" });
-  const watchedMajor = useWatch({ control, name: "major" });
 
   useEffect(() => {
-    if (watchedYear && watchedMajor) {
-      console.log("Значення змінились:", {
-        year: watchedYear,
-        major: watchedMajor,
-      });
-      dispatch(setMajorData({ year: watchedYear, major: watchedMajor }));
-    }
-  }, [watchedYear, watchedMajor, dispatch]);
+    if (!isReady) return;
 
+    const dir = normalizeValue(watchedDirection);
+    const yrStr = String(watchedYear ?? "").trim();
+
+    if (!dir || !yrStr) return;
+    if (!directions.includes(dir)) return;
+    if (!years.map(String).includes(yrStr)) return;
+
+    dispatch(
+      setActiveDirection({
+        direction: dir, // lowercase stored
+        year: Number(yrStr), // number stored
+      })
+    );
+  }, [watchedDirection, watchedYear, isReady, dispatch, directions, years]);
+
+  // Submit
   const onSubmit = async (data: Ischema) => {
-    // dispatch(setMajorData(data));
-    const { payload }: IPayloadPlan = await dispatch(fetchPlans({ ...data }));
-    router.push(`/plan/${payload.id}`);
+    console.log("data");
+
+    const payload = {
+      direction: normalizeValue((data as any).direction),
+      year: Number(String((data as any).year)),
+    };
+
+    console.log(payload);
+
+    try {
+      const plan = await dispatch(fetchPlans(payload as any)).unwrap();
+      console.log("ja tuta");
+
+      router.push(`upsl/plan`);
+    } catch (e) {
+      console.error("fetchPlans failed", e);
+    }
   };
+
+  // Skeleton (stable layout)
+
+  if (!isReady) {
+    return (
+      <div className="mx-auto w-full max-w-sm sm:max-w-md md:max-w-lg px-4 sm:px-0 mt-12 space-y-4">
+        <div className="h-10 rounded-md border bg-muted/40" />
+        <div className="h-10 rounded-md border bg-muted/40" />
+        <div className="h-10 rounded-md border bg-muted/40" />
+      </div>
+    );
+  }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-1 max-w-md mt-13 mx-auto text-sm md:text-base lg:text-lg"
+      className="
+        mx-auto w-full max-w-sm sm:max-w-md md:max-w-lg sm:px-0
+        mt-12
+        space-y-2
+        text-sm md:text-base
+      "
     >
-      {/* Select Rok studiów */}
-      <div className="relative pb-5">
-        <label htmlFor="year" className="text-sm">
+      {/* Rok */}
+      <div className="space-y-1">
+        <label
+          htmlFor="year"
+          className="block text-xs font-medium text-muted-foreground"
+        >
           Rok studiów
         </label>
+
         <Controller
           name="year"
           control={control}
           render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+            <Select
+              value={String(field.value)}
+              onValueChange={(v) => field.onChange(Number(v))}
+            >
+              <SelectTrigger
+                id="year"
+                className="h-10 w-full rounded-md border px-3 text-sm focus:ring-2 focus:ring-primary/40"
+              >
                 <SelectValue placeholder="Wybierz rok" />
               </SelectTrigger>
+
               <SelectContent>
-                {years.map((item, index) => (
-                  <SelectItem key={index} value={item.toString()}>
-                    {item}
+                {years.map((y) => (
+                  <SelectItem key={y} value={String(y)}>
+                    {y}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           )}
         />
-        {errors.year && (
-          <p className="text-red-500 text-xs mt-1 absolute bottom-0 left-0">
-            {errors.year.message}
-          </p>
-        )}
+
+        <div className="min-h-[16px]">
+          {errors.year && (
+            <p className="text-xs text-red-500">
+              {String(errors.year.message)}
+            </p>
+          )}
+        </div>
       </div>
 
-      {/* Select Kierunek studiów */}
-      <div className="relative pb-5">
-        <label htmlFor="major" className="text-sm">
+      {/* Kierunek */}
+      <div className="space-y-1">
+        <label
+          htmlFor="direction"
+          className="block text-xs font-medium text-muted-foreground"
+        >
           Kierunek studiów
         </label>
+
         <Controller
-          name="major"
+          name="direction"
           control={control}
           render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
-                <SelectValue
-                  className="set-secondary-color "
-                  placeholder="Wybierz kierunek"
-                />
+            <Select
+              value={normalizeValue(field.value)}
+              onValueChange={(v) => field.onChange(normalizeValue(v))}
+            >
+              <SelectTrigger
+                id="direction"
+                className="h-10 w-full rounded-md border px-3 text-sm focus:ring-2 focus:ring-primary/40"
+              >
+                <SelectValue placeholder="Wybierz kierunek" />
               </SelectTrigger>
+
               <SelectContent>
-                {majors.map((item, index) => (
-                  <SelectItem key={index} value={item}>
-                    {item}
+                {directions.map((val) => (
+                  <SelectItem key={val} value={val}>
+                    {toLabel(val)}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           )}
         />
-        {errors.major && (
-          <p className="text-red-500 text-xs mt-1 absolute bottom-0 left-0">
-            {errors.major.message}
-          </p>
-        )}
+
+        <div className="min-h-[16px]">
+          {errors.direction && (
+            <p className="text-xs text-red-500">
+              {String(errors.direction.message)}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between gap-4 relative">
-        <div className="flex-1">
-          <Button
-            type="submit"
-            variant="outline"
-            disabled={isSubmitting}
-            className="max-w-full w-full"
-          >
-            Support us
-          </Button>
-        </div>
-        <div className="flex-1">
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full set-button-bg set-unprimary-color"
-          >
-            {isSubmitting ? "Szukam..." : "Znajdź"}
-          </Button>
-        </div>
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        <Button
+          type="button"
+          variant="outline"
+          disabled={isSubmitting}
+          className="w-full sm:w-1/2 h-10"
+          onClick={() => {
+            // TODO: open donate modal / route
+          }}
+        >
+          Support us
+        </Button>
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full sm:w-1/2 h-10 set-button-bg set-unprimary-color"
+        >
+          {isSubmitting ? "Szukam..." : "Znajdź"}
+        </Button>
       </div>
     </form>
   );

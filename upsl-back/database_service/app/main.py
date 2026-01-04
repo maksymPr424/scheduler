@@ -2,11 +2,24 @@ from fastapi import FastAPI
 from .api.router import router as api_router
 from app.api.exception_handlers import domain_error_handler
 from app.domain.exceptions.base import DomainError
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="Database Service",
     description="Service for managing and querying the database of the UPSL application",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3001",  # Next.js
+        "http://localhost:3000",  # Next.js
+
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.add_exception_handler(

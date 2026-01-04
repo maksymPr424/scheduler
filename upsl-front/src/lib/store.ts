@@ -3,21 +3,21 @@ import { combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import planReducer from "../features/plans/planSlice";
-import majorReducer from "../features/major/majorSlice";
 import authReducer from "../features/auth/authSlice";
 import filterReducer from "../features/filter/filterSlice";
+import directionsReducer from "../features/directions/directionsSlice";
 
 const rootReducer = combineReducers({
   plans: planReducer,
-  major: majorReducer,
   auth: authReducer,
   filter: filterReducer,
+  directions: directionsReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["plans", "major", "auth", "filter"],
+  whitelist: ["plans", "auth", "filter", "directions"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

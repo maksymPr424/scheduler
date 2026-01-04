@@ -6,27 +6,29 @@ import { Button } from "@/components/ui/button";
 import PlanItem from "./PlanItem";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFilteredPlans } from "@/features/plans/planSelectors";
-import { fetchPlansById } from "@/features/plans/planThunks";
+import { fetchPlans } from "@/features/plans/planThunks";
 import { useParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { daySet } from "@/utils/constants";
 
 export default function PlanItems() {
   const dispatch = useDispatch();
-  const params = useParams();
 
   const days = useSelector(selectFilteredPlans);
+  console.log(days);
 
   const itemRefs = useRef<Record<number, HTMLHeadingElement | null>>({});
 
   const today = new Date();
   const dayOfWeek = today.getDay();
 
-  const { id } = params as { id: string };
-
   useEffect(() => {
-    dispatch(fetchPlansById(id));
-  }, [dispatch, id]);
+    // if (!days.length) {
+    dispatch(
+      fetchPlans({ year: 3, direction: "informatics", day: "2026-02-02" })
+    );
+    // }
+  }, [days.length, dispatch]);
 
   const scrollToItem = (itemId: number) => {
     const targetRef = itemRefs.current[itemId];
