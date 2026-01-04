@@ -1,25 +1,18 @@
-# from datetime import date
-# from db.session import SessionLocal
-# from services.week_schedule_builder import build_schedule_week
-# from domain.enums import Direction, Year
-
-# db = SessionLocal()
-
-# schedule = build_schedule_week(date.today(), direction=Direction.INFORMATICS, year=Year.THIRD, db=db)
-
-# print(schedule)
-
-# db.close()
-
-
-# app/main.py
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from .api.router import router as api_router
+from app.api.exception_handlers import domain_error_handler
+from app.domain.exceptions.base import DomainError
 
 app = FastAPI(
     title="Database Service",
-    description="Service for managing the database of the UPSL application",
+    description="Service for managing and querying the database of the UPSL application",
     version="1.0.0"
 )
+
+app.add_exception_handler(
+    DomainError,
+    domain_error_handler,
+)
+
 
 app.include_router(api_router)  # Include your routers here

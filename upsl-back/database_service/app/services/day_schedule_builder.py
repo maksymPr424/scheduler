@@ -3,6 +3,7 @@ from app.db.models.lesson import Lesson
 from app.db.models.override import Override
 from app.db.models.calendar_block import CalendarBlock
 from app.domain.enums import DayOfWeek, OverrideAction
+from app.domain.exceptions.schedule import LessonsNotFound
 
 def build_schedule_day(day: DayOfWeek, date: date, section_id: int, db):    
 
@@ -14,8 +15,7 @@ def build_schedule_day(day: DayOfWeek, date: date, section_id: int, db):
     lessons_by_id = {lesson.id: lesson for lesson in lessons}
 
     if not lessons:
-        return ["Sorry, we have not found any lessons for this day."]
-
+        raise LessonsNotFound()
     
     calendar_blocks = (db.query(CalendarBlock).filter(
         CalendarBlock.section_id == section_id,

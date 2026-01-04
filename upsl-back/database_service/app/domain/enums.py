@@ -1,3 +1,5 @@
+from default_lib import  Direction, Year, ScheduleProps, FilterProps
+
 from enum import Enum, IntEnum
 
 class Direction(str, Enum):

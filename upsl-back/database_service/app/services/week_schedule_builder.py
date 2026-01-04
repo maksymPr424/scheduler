@@ -3,19 +3,22 @@ from datetime import date
 from app.services.utils import get_day_name, get_week_dates
 from app.db.models.section import Section
 from app.services.day_schedule_builder import build_schedule_day
-from app.domain.constants import DAY_BY_ID
+from app.domain.constants import DAY_BY_ID, MIN_DATE_STR, MAX_DATE_STR
+from app.domain.exceptions.schedule import ScheduleNotFound, InvalidScheduleDate
 
 def build_schedule_week(d: date, direction: Direction, year: Year, db):
 
-    week_dates = get_week_dates(d)
+    if d < date.fromisoformat(MIN_DATE_STR) or d > date.fromisoformat(MAX_DATE_STR):
+        raise InvalidScheduleDate()
 
+    week_dates = get_week_dates(d)
 
     section = db.query(Section.id).filter(
     Section.direction == direction.value,
     Section.year == int(year)).first()
 
     if not section:
-        return {"message": "Sorry, we have not schedule for this direction and year yet."}
+        raise ScheduleNotFound()
     
     result = []
 
