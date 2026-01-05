@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { selectError } from "@/features/plans/planSelectors";
 
 // ---- helpers ----
 function normalizeValue(v: unknown): string {
@@ -57,7 +58,7 @@ export default function FormSearchPlan() {
   const rawDirections = useSelector(selectDirections); // might contain mixed-case
   const rawYears = useSelector(selectYears); // number[]
   const active = useSelector(selectActiveDirection); // {direction, year} | null
-  const plansError = useSelector((state) => state.plans.error);
+  const plansError = useSelector(selectError);
 
   // Fetch directions once after mount
   useEffect(() => {
@@ -116,8 +117,8 @@ export default function FormSearchPlan() {
     resolver: yupResolver(schema),
     mode: "onChange",
     defaultValues: {
-      direction: safeDirection as any, // stored as lowercase string
-      year: safeYear as any, // stored as string
+      direction: safeDirection, // stored as lowercase string
+      year: Number(safeYear), // stored as string
     },
   });
 
@@ -129,8 +130,8 @@ export default function FormSearchPlan() {
     initialized.current = true;
 
     reset({
-      direction: safeDirection as any,
-      year: safeYear as any,
+      direction: safeDirection,
+      year: Number(safeYear),
     });
   }, [isReady, reset, safeDirection, safeYear]);
 
@@ -159,8 +160,8 @@ export default function FormSearchPlan() {
   // Submit
   const onSubmit = async (data: Ischema) => {
     const payload = {
-      direction: normalizeValue((data as any).direction),
-      year: Number(String((data as any).year)),
+      direction: normalizeValue(data.direction),
+      year: Number(String(data.year)),
     };
 
     try {

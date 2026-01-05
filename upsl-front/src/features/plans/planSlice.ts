@@ -24,9 +24,10 @@ const planSlice = createSlice({
 
         state.plans = payload;
       })
-      .addCase(fetchPlans.rejected, (state, action) => {
+      .addCase(fetchPlans.rejected, (state, _) => {
         state.loading = false;
-        state.error = action.payload || "Error fetching plans";
+        state.error =
+          "Sorry, we have not schedule for this direction and year yet.";
       });
   },
 });

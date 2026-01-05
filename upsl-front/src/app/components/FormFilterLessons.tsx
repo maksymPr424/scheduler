@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import filters from "../../../filters.json";
 
 import {
   AccordionContent,
@@ -14,9 +13,14 @@ import { Label } from "@/components/ui/label";
 import {
   selectActiveFilters,
   selectError,
+  selectFilters,
   selectLoading,
 } from "@/features/filter/filterSelectors";
 import { setActiveGroups } from "@/features/filter/filterSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { fetchFilters } from "@/features/filter/filterThunks";
+import { selectActiveDirection } from "@/features/directions/directionsSelectors";
+import { useRouter } from "next/navigation";
 
 export default function FormFilterLessons({
   children,
@@ -24,18 +28,32 @@ export default function FormFilterLessons({
   children?: React.ReactNode;
 }) {
   const dispatch = useDispatch();
+  const dispatchApp = useAppDispatch();
   const activeFilters = useSelector(selectActiveFilters);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
+  const filters = useSelector(selectFilters);
+  const activeDir = useSelector(selectActiveDirection);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (filters.length === 0 && activeDir) {
+      dispatchApp(fetchFilters(activeDir));
+    } else if (!activeDir) {
+      dispatchApp(setActiveGroups([]));
+
+      router.push(`/`);
+    }
+  }, [filters, dispatchApp, activeDir, router]);
 
   const handleRadioChange = (
-    filterOptions: { json_groups_to_include: string[] }[],
+    filterOptions: { groups: string[] }[],
     selectedGroups: string[]
   ) => {
     const next = new Set(activeFilters);
-
+    console.log("filterOptions", filterOptions);
     filterOptions.forEach((opt) => {
-      opt.json_groups_to_include.forEach((group) => {
+      opt.groups.forEach((group) => {
         next.delete(group);
       });
     });
@@ -54,9 +72,7 @@ export default function FormFilterLessons({
         </AccordionTrigger>
         {filters.map((filter) => {
           const activeOption = filter.options.find((option) =>
-            option.json_groups_to_include.every((g) =>
-              activeFilters.includes(g)
-            )
+            option.groups.every((g) => activeFilters.includes(g))
           );
 
           return (
@@ -76,10 +92,7 @@ export default function FormFilterLessons({
                         );
 
                         if (selected) {
-                          handleRadioChange(
-                            filter.options,
-                            selected.json_groups_to_include
-                          );
+                          handleRadioChange(filter.options, selected.groups);
                         }
                       }}
                       className="flex flex-col gap-2"

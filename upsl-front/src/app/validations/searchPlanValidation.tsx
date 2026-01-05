@@ -17,5 +17,5 @@ export interface Ischema {
 }
 
 export interface IFetchPlanForm extends Ischema {
-  day: number;
+  day: string;
 }

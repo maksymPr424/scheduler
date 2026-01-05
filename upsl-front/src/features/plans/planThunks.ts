@@ -23,10 +23,8 @@ export const fetchPlans = createAsyncThunk(
       const res: IDay[] = response.data;
 
       return res;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data.message || "Something went wrong"
-      );
+    } catch (_) {
+      return rejectWithValue("Something went wrong");
     }
   }
 );

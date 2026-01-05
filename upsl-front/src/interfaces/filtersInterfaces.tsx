@@ -1,7 +1,7 @@
 export interface IFilterOprion {
   name: string;
   id: number;
-  json_groups_to_include: string[];
+  groups: string[];
 }
 
 export interface IFilter {
@@ -11,14 +11,15 @@ export interface IFilter {
 }
 
 export interface IFiltersState {
-  filters: IFilter[] | [];
-  active: string[] | [];
+  filters: IFilter[];
+  active: string[];
   loading: boolean;
   error: string | null;
 }
 
 export interface IFetchFiltersProps {
-  id: string;
+  direction: string;
+  year: number;
 }
 
 export interface IFilterPayload {

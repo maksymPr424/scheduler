@@ -4,7 +4,7 @@ import { ItemGroup } from "@/components/ui/item";
 import { Button } from "@/components/ui/button";
 
 import PlanItem from "./PlanItem";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectFilteredPlans } from "@/features/plans/planSelectors";
 import { fetchPlans } from "@/features/plans/planThunks";
 import { useEffect, useRef } from "react";
@@ -12,9 +12,10 @@ import { daySet } from "@/utils/constants";
 import FreeDay from "./FreeDay";
 import { selectActiveDirection } from "@/features/directions/directionsSelectors";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
 
 export default function PlanItems() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const days = useSelector(selectFilteredPlans);
@@ -28,12 +29,16 @@ export default function PlanItems() {
 
   useEffect(() => {
     if (!days.length && active) {
-      dispatch(
-        fetchPlans({
-          ...active,
-          day: today.toISOString().split("T")[0],
-        })
-      );
+      const dis = async () => {
+        await dispatch(
+          fetchPlans({
+            ...active,
+            day: today.toISOString().split("T")[0],
+          })
+        );
+      };
+
+      dis();
     } else if (!active) {
       router.push(`/`);
     }
@@ -77,7 +82,9 @@ export default function PlanItems() {
                 className={`text-lg font-medium top-0 sticky z-50 set-bg-base ${
                   dayOfWeek === index ? "set-today-border" : "set-day-border"
                 }`}
-                ref={(el) => (itemRefs.current[index] = el)}
+                ref={(el) => {
+                  itemRefs.current[index] = el;
+                }}
               >
                 {daySet[day.day]}
               </h3>

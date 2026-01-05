@@ -7,11 +7,18 @@ export interface ILesson {
   lesson_type: LessonType;
   teacher: string;
   auditory: string;
-  groups: string;
+  groups: string[];
 }
 
+export type WeekDay =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday";
+
 export interface IDay {
-  day: string;
+  day: WeekDay;
   date: string;
   lessons: ILesson[];
 }

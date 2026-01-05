@@ -18,8 +18,8 @@ export const fetchDirections = createAsyncThunk(
       };
 
       return res;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || "Something went wrong");
+    } catch (_) {
+      return rejectWithValue("Something went wrong");
     }
   }
 );
