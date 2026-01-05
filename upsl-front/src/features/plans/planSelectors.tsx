@@ -14,23 +14,22 @@ export const selectFilteredPlans = createSelector(
       return plans;
     }
 
-    return plans
-      .map((day: IDay) => {
-        const filteredLessons = day.lessons
-          .filter(
-            (lesson) =>
-              lesson.groups.includes("all") ||
-              lesson.groups.some((group) => activeFilters.includes(group))
-          )
-          .sort((a, b) => {
-            const [ha, ma] = a.start.split(":").map(Number);
-            const [hb, mb] = b.start.split(":").map(Number);
+    return plans.map((day: IDay) => {
+      const filteredLessons = day.lessons
+        .filter(
+          (lesson) =>
+            lesson.groups.includes("all") ||
+            lesson.groups.some((group) => activeFilters.includes(group))
+        )
+        .sort((a, b) => {
+          const [ha, ma] = a.start.split(":").map(Number);
+          const [hb, mb] = b.start.split(":").map(Number);
 
-            return ha * 60 + ma - (hb * 60 + mb);
-          });
+          return ha * 60 + ma - (hb * 60 + mb);
+        });
 
-        return { ...day, lessons: filteredLessons };
-      })
-      .filter((day: IDay) => day.lessons.length > 0);
+      return { ...day, lessons: filteredLessons };
+    });
+    // .filter((day: IDay) => day.lessons.length > 0);
   }
 );

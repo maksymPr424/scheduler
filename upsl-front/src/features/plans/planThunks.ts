@@ -15,7 +15,7 @@ export const fetchPlans = createAsyncThunk(
       //   getToken(); // Dispatch getToken to fetch a new token
       // }
 
-      console.log({ params: { year, direction, day } });
+      console.log({ params: { section_name: direction, year, date: day } });
       const response = await api.get("/schedule/week", {
         params: { section_name: direction, year, date: day },
       });
@@ -24,7 +24,9 @@ export const fetchPlans = createAsyncThunk(
 
       return res;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Something went wrong");
+      return rejectWithValue(
+        error.response?.data.message || "Something went wrong"
+      );
     }
   }
 );

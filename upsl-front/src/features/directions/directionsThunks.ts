@@ -17,8 +17,6 @@ export const fetchDirections = createAsyncThunk(
         payload: response.data,
       };
 
-      console.log(res);
-
       return res;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");

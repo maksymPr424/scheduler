@@ -4,7 +4,7 @@ export default function Footer() {
       <div>
         <p className="text-sm">Ta strona powstała z myślą o studentach.</p>
         <p className="text-sm">
-          Jeśli Ci się przydaje – dorzuć się na pizzę 🍕 lub kawę ☕.
+          Jeśli Ci się przydaje - dorzuć się na pizzę 🍕
         </p>
       </div>
     </footer>

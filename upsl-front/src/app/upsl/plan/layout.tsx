@@ -20,7 +20,7 @@ export default function Layout({ children }: ILayout) {
       <div>
         <Header>
           <Link href="/" className="set-blue text-base">
-            <CustomIcon id="icon-search" className="w-5 h-5 set-fill " />
+            Szukaj
           </Link>
         </Header>
         <h1 className="set-primary-color text-2xl font-semibold mt-4">

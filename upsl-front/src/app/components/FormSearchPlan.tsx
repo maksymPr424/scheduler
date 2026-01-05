@@ -57,6 +57,7 @@ export default function FormSearchPlan() {
   const rawDirections = useSelector(selectDirections); // might contain mixed-case
   const rawYears = useSelector(selectYears); // number[]
   const active = useSelector(selectActiveDirection); // {direction, year} | null
+  const plansError = useSelector((state) => state.plans.error);
 
   // Fetch directions once after mount
   useEffect(() => {
@@ -157,18 +158,15 @@ export default function FormSearchPlan() {
 
   // Submit
   const onSubmit = async (data: Ischema) => {
-    console.log("data");
-
     const payload = {
       direction: normalizeValue((data as any).direction),
       year: Number(String((data as any).year)),
     };
 
-    console.log(payload);
-
     try {
-      const plan = await dispatch(fetchPlans(payload as any)).unwrap();
-      console.log("ja tuta");
+      await dispatch(
+        fetchPlans({ ...payload, day: new Date().toISOString().split("T")[0] })
+      );
 
       router.push(`upsl/plan`);
     } catch (e) {
@@ -284,6 +282,12 @@ export default function FormSearchPlan() {
             </p>
           )}
         </div>
+      </div>
+
+      <div className="min-h-[16px]">
+        {plansError && (
+          <p className="text-xs text-red-500">{String(plansError)}</p>
+        )}
       </div>
 
       {/* Buttons */}

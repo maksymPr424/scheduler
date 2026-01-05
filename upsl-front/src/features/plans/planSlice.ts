@@ -26,7 +26,7 @@ const planSlice = createSlice({
       })
       .addCase(fetchPlans.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Error fetching plans";
+        state.error = action.payload || "Error fetching plans";
       });
   },
 });

@@ -7,28 +7,39 @@ import PlanItem from "./PlanItem";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFilteredPlans } from "@/features/plans/planSelectors";
 import { fetchPlans } from "@/features/plans/planThunks";
-import { useParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { daySet } from "@/utils/constants";
+import FreeDay from "./FreeDay";
+import { selectActiveDirection } from "@/features/directions/directionsSelectors";
+import { useRouter } from "next/navigation";
 
 export default function PlanItems() {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const days = useSelector(selectFilteredPlans);
-  console.log(days);
+  const active = useSelector(selectActiveDirection);
 
   const itemRefs = useRef<Record<number, HTMLHeadingElement | null>>({});
 
   const today = new Date();
+  // const dayOfWeek = today.getDay();
   const dayOfWeek = today.getDay();
 
   useEffect(() => {
-    // if (!days.length) {
-    dispatch(
-      fetchPlans({ year: 3, direction: "informatics", day: "2026-02-02" })
-    );
-    // }
-  }, [days.length, dispatch]);
+    if (!days.length && active) {
+      dispatch(
+        fetchPlans({
+          ...active,
+          day: today.toISOString().split("T")[0],
+        })
+      );
+    } else if (!active) {
+      router.push(`/`);
+    }
+  }, [active, days.length, dispatch, router, today]);
+
+  console.log("days", days);
 
   const scrollToItem = (itemId: number) => {
     const targetRef = itemRefs.current[itemId];
@@ -71,9 +82,13 @@ export default function PlanItems() {
                 {daySet[day.day]}
               </h3>
 
-              <ItemGroup className="gap-3 px-3 pb-4">
-                <PlanItem lessons={day.lessons} />
-              </ItemGroup>
+              {day.lessons.length === 0 ? (
+                <FreeDay />
+              ) : (
+                <ItemGroup className="gap-3 px-3 pb-4">
+                  <PlanItem lessons={day.lessons} />
+                </ItemGroup>
+              )}
             </div>
           );
         })}

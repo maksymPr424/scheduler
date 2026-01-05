@@ -22,10 +22,6 @@ const directionsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchDirections.fulfilled, (state, { payload }) => {
       const { directions, years } = payload.payload;
-      console.log(payload);
-
-      console.log(directions, years);
-
       state.directions = directions.filter(
         (d: string) => typeof d === "string" && d.length > 0
       );
